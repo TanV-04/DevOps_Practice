@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/<your-repo>/hello-devops-app.git'
+                git 'https://github.com/TanV-04/DevOps_Practice.git'
             }
         }
 
