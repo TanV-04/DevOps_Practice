@@ -1,0 +1,37 @@
+# 1️⃣ This creates a Deployment (which runs our app)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment   # Name of our deployment
+  labels:
+    app: nginx             # Label helps link things together
+spec:
+  replicas: 1              # Start with one pod
+  selector:
+    matchLabels:
+      app: nginx           # Match pods with this label
+  template:
+    metadata:
+      labels:
+        app: nginx         # This label must match the selector above
+    spec:
+      containers:
+        - name: nginx      # Name of the container
+          image: nginx:latest  # Use the official Nginx image from Docker Hub
+          ports:
+            - containerPort: 80  # Nginx listens on port 80 inside the container
+
+---
+# 2️⃣ This creates a Service (a network entry point)
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort              # Expose it on a port of the node
+  selector:
+    app: nginx                # Connect this service to pods with the app=nginx label
+  ports:
+    - port: 80                # Port inside the cluster
+      targetPort: 80          # Port the container listens on
+      nodePort: 30080         # Port exposed on your computer (must be 30000–32767)
